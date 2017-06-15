@@ -1,3 +1,8 @@
+<?php
+include_once("funcaoLogar.php");
+$logado = estaLogado();
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,6 +58,17 @@
       color: grey;
     }
 
+
+    li.dropdown a.dropdown-toggle:hover{
+      color: Gray;
+    }
+
+    li.dropdown a.dropdown-toggle{
+      color: white;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
     </style>
   </head>
 <!-- NAVBAR
@@ -62,14 +78,63 @@
       <div class="container">
         <div class="navbar-header">
 
-          <a class="navbar-brand" href="index.html">UndeadSkin</a>
+          <a class="navbar-brand" href="index.php">UndeadSkin</a>
 
           <div class="masthead">
             <nav>
               <ul class="nav nav-justified">
-                <li class="active"><a href="http://wancharle.com.br/ce/matheus/"> Home </a></li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >Parceiros <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                              <li ><a href="http://wancharle.com.br/ce/matheus/"> MM Veiculos </a></li>
+                              <li ><a href="http://wancharle.com.br/ce/erick/"> SSCSGO </a></li>
+                              <li ><a href="http://wancharle.com.br/ce/ludivan/"> Lud_iFit </a></li>
+                            </ul>
+                        </li>
                 <li class="active"><a href="#">Sobre nós</a></li>
                 <li class="active"><a href="#">Contato</a></li>
+
+                <?php
+                  //if($_COOKIE["logado"] == "sim"){
+                    if ($logado) {
+                      # code...
+
+                    //$x = $_POST['pessoa'];
+                ?>
+
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >Olá <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <?php $user = unserialize($_COOKIE['usuario']); ?>
+                      <li>Bem vindo, <?php echo $user['nomeUsuario']; ?></li>
+
+                      <li> <form name="form2" method="post" action="paginaConta.php"><input type="submit" value="Minha Conta"></form></li>
+                      <li> <form name="form1" method="post" action="deslogado.php"><input type="submit" value="Deslogar conta"></form></li>
+                    </ul>
+
+                <?php
+                  } else {
+                ?>
+                <li class="dropdown" ><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Log in <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <form name="form1" method="post" action="loginProc.php">
+                      <fieldset >
+                        <input type="text" name="nome" placeholder="Digite seu Nome" required>
+                        <input type="password" name="senha" placeholder="Digite sua senha" required>
+                      </fieldset>
+                      <fieldset >
+                        <input type="submit" value="      Login      " >
+                      </fieldset>
+                    </form>
+                    <form name="form2" method="post" action="cadastro.php">
+                      <fieldset >
+                        <input type="submit" value="Cadastre-se">
+                      </fieldset>
+                    </form>
+                  </ul>
+                </li>
+                <?php
+                  }
+                 ?>
+
               </ul>
             </nav>
           </div>
@@ -134,49 +199,49 @@
           <img class="img-circle" src="img/body.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Body</h2>
           <p>Skin para o torso</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=1&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/head.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Head</h2>
           <p>Skins de capacetes</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=2&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/weapon.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Weapon</h2>
           <p>Skins de armas em geral</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=3&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/face.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Face</h2>
           <p>Mascaras e oculos</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=4&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/feet.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Feet</h2>
           <p>Calçados em geral</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=5&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/hands.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Hands</h2>
           <p>Luvas diversas</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=6&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/legs.png" alt="Generic placeholder image" width="140" height="140">
           <h2>Legs</h2>
           <p>Calças em geral</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=7&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img class="img-circle" src="img/back.jpg" alt="Generic placeholder image" width="140" height="140">
           <h2>Back</h2>
           <p>Mochilas de diversos tipos</p>
-          <p><a class="btn btn-default" href="shop.html" role="button"> Acessar &raquo;</a></p>
+          <p><a class="btn btn-default" href="shop.php?categoria=8&pagina=" role="button"> Acessar &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
 
       </div><!-- /.row -->

@@ -1,3 +1,30 @@
+<?php
+	include_once("funcaoLogar.php");
+	$conexaoBanco = new PDO('sqlite:Ecommerce.sqlite') or die ("Não Conectou!");
+	$logado = estaLogado();
+ 	$user = unserialize($_COOKIE['usuario']);
+	$codUsuario = $user['codUsuario'];
+	$i = 0;
+
+	if($_GET != null){
+		$categoria = $_GET['categoria'];
+	}else{
+			$categoria = null;
+	}
+
+	$sqlCount ="SELECT COUNT(*) AS total FROM vendas WHERE codUsuario = '$codUsuario'; ";
+	$resultado = $conexaoBanco->query($sqlCount);
+	$total = $resultado->fetchAll();
+	$registros = 9;
+	$totalRegistro = $total[0]['total'];
+	$numPaginas = ceil($totalRegistro/$registros);
+	//verifica a página atual caso seja informada na URL, senão atribui como 1ª página
+  $pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+	//variavel para calcular o início da visualização com base na página atual
+  $inicio = ($registros*$pagina)-$registros;
+
+	include("vendasCon.php");
+  ?>
 <!doctype html>
 <html lang="en-US">
 	<head>
@@ -32,29 +59,65 @@
 		    li.active a:hover{
 		      color: grey;
 		    }
+				li.dropdown a.dropdown-toggle:hover{
+		      color: Gray;
+		    }
+
+		    li.dropdown a.dropdown-toggle{
+		      color: white;
+		    }
+
+				.dropdown:hover .dropdown-menu {
+    			display: block;
+  			}
 		    </style>
 
 	</head>
 	<body>
 
 		<nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
+			<div class="container">
+				<div class="navbar-header">
 
-          <a class="navbar-brand" href="index.html">UndeadSkin</a>
+					<a class="navbar-brand" href="index.php">UndeadSkin</a>
 
-          <div class="masthead">
-            <nav>
-              <ul class="nav nav-justified">
-                <li class="active"><a href="index.html"> Home </a></li>
-                <li class="active"><a href="#">Sobre nós</a></li>
-                <li class="active"><a href="#">Contato</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </nav>
+					<div class="masthead">
+						<nav>
+							<ul class="nav nav-justified">
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >Parceiros <span class="caret"></span></a>
+													<ul class="dropdown-menu">
+															<li ><a href="http://wancharle.com.br/ce/matheus/"> MM Veiculos </a></li>
+															<li ><a href="http://wancharle.com.br/ce/erick/"> SSCSGO </a></li>
+															<li ><a href="http://wancharle.com.br/ce/ludivan/"> Lud_iFit </a></li>
+														</ul>
+												</li>
+								<li class="active"><a href="#">Sobre nós</a></li>
+								<li class="active"><a href="#">Contato</a></li>
+
+								<?php
+									if($logado){
+										//$x = $_POST['pessoa'];
+								?>
+
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >Olá <span class="caret"></span></a>
+									<ul class="dropdown-menu">
+											<li>Bem vindo, <?php echo $user['nomeUsuario']; ?></li>
+											<li> <form name="form2" method="post" action="paginaConta.php"><input type="submit" value="Minha Conta"></form></li>
+                      <li> <form name="form1" method="post" action="deslogadoIndex.php"><input type="submit" value="Deslogar conta"></form></li>
+										</ul>
+
+								<?php
+									}
+								?>
+							</ul>
+						</nav>
+					</div>
+				</div>
+
+
+			</div>
+
+		</nav>
 
 
 
@@ -81,82 +144,88 @@
 					<div class="row">
 						<div class="col-md-9 main-wrap">
 							<div class="main-content">
+
+
+								<?php if ($categoria == "historico") { ?>
+									<h3> Historico de Compras</h3>
 								<div class="shop-loop grid">
 									<ul class="products">
+
+										<?php
+
+													foreach( $prod as $prods) {
+
+										?>
+
 										<li class="product product-no-border style-2 col-md-3 col-sm-6">
 											<div class="product-container">
 												<figure>
 													<div class="product-wrap">
-														<div class="product-images">
-															<div class="shop-loop-thumbnail shop-loop-front-thumbnail">
-																<a href="shop-detail-1.html"><img width="450" height="450" src="images/products/product_328x328.jpg" alt=""/></a>
-															</div>
-															<div class="shop-loop-thumbnail shop-loop-back-thumbnail">
-																<a href="shop-detail-1.html"><img width="450" height="450" src="images/products/product_328x328alt.jpg" alt=""/></a>
-															</div>
+														<div class="shop-loop-thumbnail shop-loop-front-thumbnail">
+															<a href="shop-detail-2.php?codProduto=<?php echo $prod[$i]['codSkin']?>"><img width="450" height="450" src=<?php echo $prod[$i]['imgSkin']; ?> alt=""/></a>
+														</div>
+														<div class="info-price">
+															<span class="price">
+																<span><?php echo "R$ "; echo $prod[$i]['precoSkin']; ?></span>
+															</span>
 														</div>
 													</div>
-													<figcaption>
-														<div class="shop-loop-product-info">
-															<div class="info-meta clearfix">
-																<div class="star-rating">
-																	<span style="width:0%"></span>
-																</div>
-															</div>
-															<div class="info-content-wrap">
-																<h3 class="product_title">
-																	<a href="shop-detail-1.html">Ainsley Etagere</a>
-																</h3>
-																<div class="info-price">
-																	<span class="price">
-																		<span class="amount">£10.95</span>
-																	</span>
-																</div>
-																<div class="loop-action">
-																	<div class="loop-add-to-cart">
-																		<a href="#" class="add_to_cart_button">
-																			Add to cart
-																		</a>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</figcaption>
 												</figure>
 											</div>
 										</li>
 
+										<?php
+											$i++;
+										 }
+										 ?>
+
 									</ul>
 								</div>
+
+
 								<nav class="commerce-pagination">
 									<p class="commerce-result-count">
-										Showing 1&ndash;12 of 14 results
+										Mostrando <?php if ($i <= 1) {
+																				echo "$totalRegistro";
+																		}else{
+																				if($pagina == null){
+																					echo "$i"*1;
+																				}else{
+																					echo "$i"*$pagina;
+																				}
+																		} ?> de <?php echo "$totalRegistro"; ?> resultados
 									</p>
 									<div class="paginate">
+										<?php for($i = $numPaginas; $i >= 1; $i--) { ?>
 										<div class="paginate_links">
-											<span class='page-numbers current'>1</span>
-											<a class='page-numbers' href='#'>2</a>
-											<a class="next page-numbers" href="#">
-												<i class="fa fa-angle-right"></i>
-											</a>
+											<a class='page-numbers' href='paginaConta.php?categoria=historico&pagina=<?php echo "$i" ?>'> <?php echo "$i" ?></a>
 										</div>
+										<?php	} ?>
 									</div>
 								</nav>
+
+
+								<?php }else{ ?>
+													<h3> Dados do Usuário </h3><br>
+
+													<h4> <p> Nome:   <?php echo $user['nomeUsuario']; ?></p></h4><br>
+													<h4> <p> Telefone:   <?php echo $user['telUsuario']; ?></p></h4><br>
+													<h4> <p> Endereço:   <?php echo $user['endUsuario']; ?></p></h4><br>
+
+									<?php } ?>
+
+
 							</div>
 						</div>
 						<div class="col-md-3 sidebar-wrap">
 							<div class="main-sidebar">
 								<div class="widget widget_product_categories">
-									<h4 class="widget-title"><span>Categories</span></h4>
+									<h4 class="widget-title"><span> <?php echo $user['nomeUsuario'] ?></span></h4>
 									<ul class="product-categories">
-										<li><a href="#">Aliquam</a></li>
-										<li><a href="#">Donec</a></li>
-										<li><a href="#">Fusce</a></li>
-										<li><a href="#">Maecenas</a></li>
-										<li><a href="#">Nulla</a></li>
-										<li><a href="#">Proin</a></li>
-										<li><a href="#">Tortor</a></li>
-										<li><a href="#">Various</a></li>
+										<li><a href="paginaConta.php?categoria=dado"><b> Dados </b></a></li>
+										<li><a href="paginaConta.php?categoria=historico"><b> Historico </b></a></li>
+										<li><a href="shop.php?categoria="><b> Voltar as Compras </b></a></li>
+										<li><a href="deslogadoIndex.php"><b> Encerrar Sessão </b></a></li>
 									</ul>
 								</div>
 							</div>
