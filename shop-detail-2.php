@@ -78,8 +78,6 @@
                               <li ><a href="http://wancharle.com.br/ce/ludivan/"> Lud_iFit </a></li>
                             </ul>
                         </li>
-                <li class="active"><a href="#">Sobre nós</a></li>
-                <li class="active"><a href="#">Contato</a></li>
 
                 <?php
                   if($logado){
@@ -92,6 +90,7 @@
                       <li>Bem vindo, <?php echo $user['nomeUsuario']; ?></li>
                       <li> <form name="form2" method="post" action="paginaConta.php"><input type="submit" value="Minha Conta"></form></li>
                       <li> <form name="form1" method="post" action="deslogado.php"><input type="submit" value="Deslogar conta"></form></li>
+                      <li> <label> Carteira: <?php echo $user['carteira']; ?></label></li>
                     </ul>
 
                 <?php
@@ -118,6 +117,7 @@
                 <?php
                   }
                  ?>
+                 <li class="active"><a href="administradorLogin.php">Area Administrativa</a></li>
 
               </ul>
             </nav>
@@ -182,7 +182,7 @@
 																<div class="cart">
 
 																		<button id="myBtn" class="button"<?php
-																			if(false) {
+																			if($prod['quantSkin'] <= 0) {
 																					echo "disabled";
 																					$textoBotao = "Sem Estoque";
 
@@ -219,7 +219,12 @@
           <div class="modal-body">
 
 <?php  if ($logado) { ?>
-            <p>  Deseja Realmente Comprar  </p>
+          <?php  if ($user['carteira'] < $prod['precoSkin']) { ?>
+                  <p>  Você nao tem dinheiro para efetuar a compra  </p>
+                  <input type="submit" name="Nao" value="Ok">
+          <?php  }else{ ?>
+
+            <p>  Deseja Realmente Comprar </p>
           <div class="row">
             <div class="col-lg-1">
 
@@ -240,6 +245,8 @@
             <p> <b> <?php echo $prod['nomeSkin']; ?> </b></p>
             <br />
             <p><img class="img-circle" src=<?php echo $prod['imgSkin']; ?> alt="Generic placeholder image" width="140" height="140"></p>
+            <p> <b> Valor: R$ <?php  echo $prod['precoSkin']; ?> </b></p>
+          <?php  } ?>
 
 <?php  }else{ ?>
 

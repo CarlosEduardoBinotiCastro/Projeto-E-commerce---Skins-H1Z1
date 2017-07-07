@@ -90,8 +90,6 @@ $logado = estaLogado();
                               <li ><a href="http://wancharle.com.br/ce/ludivan/"> Lud_iFit </a></li>
                             </ul>
                         </li>
-                <li class="active"><a href="#">Sobre nós</a></li>
-                <li class="active"><a href="#">Contato</a></li>
 
                 <?php
                   //if($_COOKIE["logado"] == "sim"){
@@ -108,6 +106,8 @@ $logado = estaLogado();
 
                       <li> <form name="form2" method="post" action="paginaConta.php"><input type="submit" value="Minha Conta"></form></li>
                       <li> <form name="form1" method="post" action="deslogado.php"><input type="submit" value="Deslogar conta"></form></li>
+                      <li> <label> Carteira: <?php echo $user['carteira']; ?></label></li>
+
                     </ul>
 
                 <?php
@@ -134,6 +134,7 @@ $logado = estaLogado();
                 <?php
                   }
                  ?>
+                 <li class="active"><a href="administradorLogin.php">Area Administrativa</a></li>
 
               </ul>
             </nav>

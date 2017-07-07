@@ -2,6 +2,11 @@
 
   setcookie("logado", 'sim', time()+3600);
   //setcookie("usuario", serialize($usuario), time()+3600);
-  header(sprintf('location: %s', $_SERVER['HTTP_REFERER']));
+  if(isSet($_COOKIE['adm'])){
+    header(sprintf('location: administradorHome.php'));
+  }else{
+    header(sprintf('location: %s', $_SERVER['HTTP_REFERER']));
+  }
+
 
 ?>

@@ -91,8 +91,7 @@
 															<li ><a href="http://wancharle.com.br/ce/ludivan/"> Lud_iFit </a></li>
 														</ul>
 												</li>
-								<li class="active"><a href="#">Sobre nós</a></li>
-								<li class="active"><a href="#">Contato</a></li>
+
 
 								<?php
 									if($logado){
@@ -104,11 +103,14 @@
 											<li>Bem vindo, <?php echo $user['nomeUsuario']; ?></li>
 											<li> <form name="form2" method="post" action="paginaConta.php"><input type="submit" value="Minha Conta"></form></li>
                       <li> <form name="form1" method="post" action="deslogadoIndex.php"><input type="submit" value="Deslogar conta"></form></li>
+											<li> <label> Carteira: <?php echo $user['carteira']; ?></label></li>
 										</ul>
 
 								<?php
 									}
+
 								?>
+								<li class="active"><a href="administradorLogin.php">Area Administrativa</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -206,11 +208,32 @@
 
 
 								<?php }else{ ?>
+
+												<script>
+
+														function somenteNumeros(num) {
+														var er = /[^0-9.]/;
+														er.lastIndex = 0;
+														var campo = num;
+														if (er.test(campo.value)) {
+																campo.value = "";
+															}
+														}
+													</script>
+
 													<h3> Dados do Usuário </h3><br>
 
 													<h4> <p> Nome:   <?php echo $user['nomeUsuario']; ?></p></h4><br>
 													<h4> <p> Telefone:   <?php echo $user['telUsuario']; ?></p></h4><br>
 													<h4> <p> Endereço:   <?php echo $user['endUsuario']; ?></p></h4><br>
+													<h4> <p> Carteira:   <?php echo $user['carteira']; ?></p></h4>
+													<form  id="form" action="fundos.php" method="post">
+														<input type="text" onkeyup="somenteNumeros(this);" name="valor" value="">
+														<input type="submit" class="btn btn-default" value="Colocar Fundos" >
+													</form>
+
+
+
 
 									<?php } ?>
 

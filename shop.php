@@ -7,6 +7,7 @@
 	}else{
 			$categoria = null;
 	}
+	$registros = 9;
   include ("ecommerceCon.php");
 
 	//verifica a página atual caso seja informada na URL, senão atribui como 1ª página
@@ -85,8 +86,7 @@
 															<li ><a href="http://wancharle.com.br/ce/ludivan/"> Lud_iFit </a></li>
 														</ul>
 												</li>
-								<li class="active"><a href="#">Sobre nós</a></li>
-								<li class="active"><a href="#">Contato</a></li>
+
 
 								<?php
 									if($logado){
@@ -99,6 +99,7 @@
 											<li>Bem vindo, <?php echo $user['nomeUsuario']; ?></li>
 											<li> <form name="form2" method="post" action="paginaConta.php"><input type="submit" value="Minha Conta"></form></li>
                       <li> <form name="form1" method="post" action="deslogado.php"><input type="submit" value="Deslogar conta"></form></li>
+											<li> <label> Carteira: <?php echo $user['carteira']; ?></label></li>
 										</ul>
 
 								<?php
@@ -125,7 +126,7 @@
 								<?php
 									}
 								 ?>
-
+								 <li class="active"><a href="administradorLogin.php">Area Administrativa</a></li>
 							</ul>
 						</nav>
 					</div>
